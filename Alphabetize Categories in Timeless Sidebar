@@ -1,0 +1,32 @@
+/* Alphabetize Categories in Timeless Sidebar */
+$(function() {
+    function sortTimelessCategories() {
+        // Targeted selector for the Timeless sidebar category list
+        var $catList = $('#p-normal-catlinks ul');
+        
+        if ($catList.length) {
+            var $items = $catList.children('li').get();
+
+            $items.sort(function(a, b) {
+                var textA = $(a).text().trim().toUpperCase();
+                var textB = $(b).text().trim().toUpperCase();
+                
+                // Uses localeCompare to handle accented characters (like Félix) correctly
+                return textA.localeCompare(textB, undefined, {numeric: true, sensitivity: 'base'});
+            });
+
+            // Append them back in the new order
+            $.each($items, function(i, li) {
+                $catList.append(li);
+            });
+            
+            console.log("Timeless sidebar categories sorted.");
+        }
+    }
+
+    // Run once the DOM is ready
+    $(document).ready(sortTimelessCategories);
+    
+    // In case of dynamic loading, run once more after a split second
+    setTimeout(sortTimelessCategories, 200);
+});
