@@ -1,0 +1,17 @@
+// MediaWiki 1.39 - Global Parser-level Category Sorter
+function efSortCategoriesGlobally( $parser, &$text ) {
+    $pOut = $parser->getOutput();
+    $categories = $pOut->getCategories();
+    
+    if ( !empty( $categories ) ) {
+        // Sort the category keys (the names) alphabetically, case-insensitive
+        uksort( $categories, 'strcasecmp' );
+        
+        // Clear the current categories in the ParserOutput
+        // Note: In 1.39, we must set them via a fresh array
+        $pOut->setCategories( $categories );
+    }
+    return true;
+}
+
+$wgHooks['ParserAfterParse'][] = 'efSortCategoriesGlobally';
